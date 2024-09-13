@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #ffccf2; /* Light pink background */
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+        }
+
+        h1, p {
+            opacity: 0; /* Hidden initially */
+            transition: opacity 2s ease-in; /* Smooth fade-in transition */
+        }
+
+        .heart {
+            color: #e60073;
+            font-size: 4em;
+            margin-bottom: 20px;
+            cursor: pointer;
+            animation: none;
+            transition: opacity 1s ease-out; /* Smooth fade-out transition for the heart */
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ff5733;
+            opacity: 0; /* Initially invisible */
+            animation: fall 8s linear, fadeOut 20s linear; /* Fall and fade out within 20 seconds */
+            border-radius: 50%;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh); 
+                opacity: 1; /* Fully visible at the start */
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 1; /* Remain visible until end of fall */
+            }
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1; /* Fully visible at the start of fadeOut */
+            }
+            100% {
+                opacity: 0; /* Fully invisible at the end of fadeOut */
+            }
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="heart" id="heart">❤️</div>
+        <h1 id="birthday-text">Happy Birthday <span id="darling">Darling!</span></h1>
+        <p id="wish-text">Wishing you all the <span id="love">love</span> and <span id="happiness">happiness</span> in the world!</p>
+    </div>
+
+    <!-- Confetti container -->
+    <div id="confetti-container" style="display: none;"></div>
+
+    <script>
+        const heart = document.getElementById('heart');
+        const confettiContainer = document.getElementById('confetti-container');
+        const confettiCount = 2000; // High number of confetti pieces for dense effect
+        const colors = ['#ffcc00', '#00ccff', '#ccff66', '#ff66cc', '#66ff66', '#9933ff', '#ff5733'];
+
+        function produceConfetti() {
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = Math.random() * 100 + 'vw'; // Random horizontal position
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)]; // Random color
+                confetti.style.width = Math.random() * 10 + 5 + 'px'; // Random width
+                confetti.style.height = confetti.style.width; // Make confetti pieces square
+                confetti.style.animationDuration = Math.random() * 8 + 's'; // Random duration between 4 and 8 seconds
+                confetti.style.animationDelay = Math.random() * 8 + 's'; // Random delay for smoother effect
+                confettiContainer.appendChild(confetti);
+            }
+        }
+
+        // Handle heart click event
+        heart.addEventListener('click', () => {
+            // Hide the heart with a fade-out effect
+            heart.style.opacity = '0';
+
+            // Show confetti container
+            confettiContainer.style.display = 'block';
+
+            // Produce confetti for 8 seconds
+            produceConfetti();
+
+            // Fade in birthday messages after the heart is clicked
+            const birthdayText = document.getElementById('birthday-text');
+            const wishText = document.getElementById('wish-text');
+
+            // Show the first message
+            setTimeout(() => {
+                birthdayText.style.opacity = '1';
+            }, 1000); // 1-second delay after click
+
+            // Show the second message with further delay
+            setTimeout(() => {
+                wishText.style.opacity = '1';
+            }, 3000); // 3-second delay after click
+
+            // Change the color of specific words after the text appears
+            setTimeout(() => {
+                const darling = document.getElementById('darling');
+                darling.style.transition = 'color 2s ease-in-out';
+                darling.style.color = 'red';
+            }, 5000); // 5-second delay after click
+
+            setTimeout(() => {
+                const love = document.getElementById('love');
+                love.style.transition = 'color 2s ease-in-out';
+                love.style.color = 'red';
+            }, 7000); // 7-second delay after click
+
+            setTimeout(() => {
+                const happiness = document.getElementById('happiness');
+                happiness.style.transition = 'color 2s ease-in-out';
+                happiness.style.color = 'red';
+            }, 9000); // 9-second delay after click
+
+            // Wait for 5 seconds, then fade out text one by one
+            setTimeout(() => {
+                setTimeout(() => {
+                    birthdayText.style.transition = 'opacity 2s ease-out';
+                    birthdayText.style.opacity = '0';
+                }, 1000); // 1-second delay before starting fade-out of first text
+
+                setTimeout(() => {
+                    wishText.style.transition = 'opacity 2s ease-out';
+                    wishText.style.opacity = '0';
+                }, 3000); // 3-second delay before starting fade-out of second text
+
+                // Close the tab after text fades out
+                setTimeout(() => {
+                    window.close(); // Attempt to close the tab
+                }, 5000); // 5-second delay before closing the tab
+
+            }, 12000); // 12-second delay before starting the fade-out
+        });
+    </script>
+</body>
+</html>
